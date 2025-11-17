@@ -1,84 +1,84 @@
-CREATE TABLE etudiant (
-  id_etudiant INTEGER PRIMARY KEY AUTOINCREMENT,
-  nom TEXT NOT NULL,
-  prenom TEXT NOT NULL,
+CREATE TABLE student (
+  student_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  last_name TEXT NOT NULL,
+  first_name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
-  filiere TEXT,
-  annee INTEGER
+  major TEXT,
+  year INTEGER
 );
 
 CREATE TABLE club (
-  id_club INTEGER PRIMARY KEY AUTOINCREMENT,
-  nom TEXT NOT NULL,
+  club_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
   description TEXT,
-  capacite INTEGER
+  capacity INTEGER
 );
 
-CREATE TABLE activite (
-  id_activite INTEGER PRIMARY KEY AUTOINCREMENT,
-  titre TEXT NOT NULL,
+CREATE TABLE activity (
+  activity_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
   type TEXT,
-  date_debut DATE,
-  date_fin DATE,
-  heure_debut TIME,
-  heure_fin TIME,
-  lieu TEXT,
-  id_club INTEGER,
-  FOREIGN KEY(id_club) REFERENCES club(id_club)
+  start_date DATE,
+  end_date DATE,
+  start_time TIME,
+  end_time TIME,
+  location TEXT,
+  club_id INTEGER,
+  FOREIGN KEY(club_id) REFERENCES club(club_id)
 );
 
-CREATE TABLE encadrant (
-  id_encadrant INTEGER PRIMARY KEY AUTOINCREMENT,
-  nom TEXT,
-  prenom TEXT,
+CREATE TABLE supervisor (
+  supervisor_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  last_name TEXT,
+  first_name TEXT,
   role TEXT,
   email TEXT
 );
 
-CREATE TABLE salle (
-  id_salle INTEGER PRIMARY KEY AUTOINCREMENT,
-  nom TEXT,
-  capacite INTEGER,
-  localisation TEXT
+CREATE TABLE room (
+  room_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  capacity INTEGER,
+  location TEXT
 );
 
-CREATE TABLE inscription (
-  id_etudiant INTEGER,
-  id_club INTEGER,
-  date_inscription DATE,
-  statut TEXT,
-  PRIMARY KEY (id_etudiant, id_club),
-  FOREIGN KEY(id_etudiant) REFERENCES etudiant(id_etudiant),
-  FOREIGN KEY(id_club) REFERENCES club(id_club)
+CREATE TABLE registration (
+  student_id INTEGER,
+  club_id INTEGER,
+  registration_date DATE,
+  status TEXT,
+  PRIMARY KEY (student_id, club_id),
+  FOREIGN KEY(student_id) REFERENCES student(student_id),
+  FOREIGN KEY(club_id) REFERENCES club(club_id)
 );
 
 CREATE TABLE participation (
-  id_etudiant INTEGER,
-  id_activite INTEGER,
+  student_id INTEGER,
+  activity_id INTEGER,
   presence INTEGER DEFAULT 0,
   note TEXT,
-  date_enregistrement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id_etudiant, id_activite),
-  FOREIGN KEY(id_etudiant) REFERENCES etudiant(id_etudiant),
-  FOREIGN KEY(id_activite) REFERENCES activite(id_activite)
+  recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (student_id, activity_id),
+  FOREIGN KEY(student_id) REFERENCES student(student_id),
+  FOREIGN KEY(activity_id) REFERENCES activity(activity_id)
 );
 
-CREATE TABLE encadre (
-  id_encadrant INTEGER,
-  id_activite INTEGER,
-  role_encadrement TEXT,
-  PRIMARY KEY (id_encadrant, id_activite),
-  FOREIGN KEY(id_encadrant) REFERENCES encadrant(id_encadrant),
-  FOREIGN KEY(id_activite) REFERENCES activite(id_activite)
+CREATE TABLE supervises (
+  supervisor_id INTEGER,
+  activity_id INTEGER,
+  supervision_role TEXT,
+  PRIMARY KEY (supervisor_id, activity_id),
+  FOREIGN KEY(supervisor_id) REFERENCES supervisor(supervisor_id),
+  FOREIGN KEY(activity_id) REFERENCES activity(activity_id)
 );
 
 CREATE TABLE reservation (
-  id_reservation INTEGER PRIMARY KEY AUTOINCREMENT,
-  id_activite INTEGER,
-  id_salle INTEGER,
-  date_reservation DATE,
-  heure_debut TIME,
-  heure_fin TIME,
-  FOREIGN KEY(id_activite) REFERENCES activite(id_activite),
-  FOREIGN KEY(id_salle) REFERENCES salle(id_salle)
+  reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  activity_id INTEGER,
+  room_id INTEGER,
+  reservation_date DATE,
+  start_time TIME,
+  end_time TIME,
+  FOREIGN KEY(activity_id) REFERENCES activity(activity_id),
+  FOREIGN KEY(room_id) REFERENCES room(room_id)
 );
