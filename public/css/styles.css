@@ -107,3 +107,73 @@ button {
         gap:1rem
     }
 }
+
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.club-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+  transition: 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.club-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+}
+
+.club-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.club-logo {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #eee;
+  background: #fafafa;
+}
+
+.club-card h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.club-desc {
+  margin: 12px 0;
+  color: #555;
+  line-height: 1.4;
+}
+
+.capacity {
+  font-weight: 600;
+  color: #333;
+  margin: 10px 0;
+}
+
+.danger {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.danger:hover {
+  background: #b71c1c;
+}

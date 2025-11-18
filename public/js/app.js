@@ -22,31 +22,58 @@ window.app = (function () {
     }
 
     function renderClubsList(container, clubs) {
-        if (!clubs.length) { container.innerHTML = '<p>No clubs.</p>'; return; }
+        if (!clubs.length) {
+            container.innerHTML = '<p>No clubs.</p>';
+            return;
+        }
+
         container.innerHTML = '';
+        container.className = "clubs-grid"
+
         clubs.forEach(c => {
-            const div = document.createElement('div');
-            div.className = 'list-item';
-            div.innerHTML = `<div>
-          <strong>${escapeHtml(c.name)}</strong>
-          <div class="meta">${escapeHtml(c.description || '')} • cap: ${c.capacity || '—'}</div>
-        </div>
-        <div>
-          <button class="small-btn" data-id="${c.club_id}" data-action="delete">Delete</button>
-        </div>`;
-            container.appendChild(div);
+            const card = document.createElement("div");
+            card.className = "club-card";
+
+            const name = c.nom || c.name;
+            const description = c.description || "No description";
+            const capacity = c.capacite || c.capacity || "—";
+
+            const logo = c.logo || "img/default-club.png";
+
+            card.innerHTML = `
+                <div class="club-header">
+                    <img src="${escapeHtml(logo)}" 
+                        alt="club logo" 
+                        class="club-logo" />
+
+                    <h3>${escapeHtml(name)}</h3>
+                </div>
+
+                <p class="club-desc">${escapeHtml(description)}</p>
+                <p class="capacity">Capacity: ${capacity}</p>
+
+                <button class="small-btn danger"
+                    data-id="${c.id_club || c.club_id}"
+                    data-action="delete">
+                    Delete
+                </button>
+            `;
+
+            container.appendChild(card);
         });
+
         container.querySelectorAll('[data-action="delete"]').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const id = btn.dataset.id;
                 try {
                     await apiFetch('/clubs/' + id, { method: 'DELETE' });
                 } catch (e) {
-                    const clubs = JSON.parse(localStorage.getItem('clubs') || '[]').filter(x => String(x.club_id) !== String(id));
+                    const clubs = JSON
+                        .parse(localStorage.getItem('clubs') || '[]')
+                        .filter(x => String(x.club_id) !== String(id));
                     localStorage.setItem('clubs', JSON.stringify(clubs));
-                } finally {
-                    loadClubs(containerSelector);
                 }
+                loadClubs('#clubs-list');
             });
         });
     }

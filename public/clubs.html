@@ -20,15 +20,20 @@
   <main class="container">
     <section id="club-list-section">
       <h2>List of Clubs</h2>
-      <div id="clubs-list"></div>
+      <div id="clubs-list" class="clubs-grid"></div>
     </section>
 
     <section id="club-create-section">
       <h2>Create a Club</h2>
-      <form id="create-club-form">
+      <form id="create-club-form" enctype="multipart/form-data">
         <label>Name <input name="nom" required /></label>
         <label>Description <input name="description" /></label>
         <label>Capacity <input name="capacite" type="number" min="1" value="20" /></label>
+
+        <label>Logo
+          <input type="file" name="logo" accept="image/*" required />
+        </label>
+
         <button type="submit">Create</button>
       </form>
     </section>
@@ -45,7 +50,8 @@
         const data = {
           nom: form.nom.value,
           description: form.description.value,
-          capacite: parseInt(form.capacite.value,10) || 0
+          capacite: parseInt(form.capacite.value,10) || 0,
+          logo: form.logo.value || 'img/default-club.png'
         };
         await window.app.createClub(data);
         form.reset();
